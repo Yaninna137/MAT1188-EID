@@ -8,7 +8,7 @@ from core.elements.interpretation import Interpretation
 from components.design_textual.information import SectionBOX3,SectionBOX4,SectionBOX5,SectionBOX6,SectionBOX7
 from core.math.Nombre_procesamiento import ModeloCosto
 import sympy as sp
-from core.elements.graphic import GRAPHIC_A
+from core.elements.graphic import GRAPHIC_A, GRAPHIC_B
 
 
 def Datos():
@@ -41,9 +41,12 @@ def Datos():
 
         # ===== SECCION 3.Derivadas ======
         # - Crear exprección, importar proceso matematico
-        formula31 = "C'(t) = 4t + 5"
-        st.markdown(SectionBOX4(formula31), unsafe_allow_html=True)
+        derivada = modelo.derivada
+        formula31 = f"C'(t) = {sp.latex(derivada)}"
+        st.markdown(SectionBOX4(formula31,derivada), unsafe_allow_html=True)
+        
         # - Implementar Grafico
+        st.pyplot(GRAPHIC_B(modelo, T))
 
         # ===== SECCION 4.Integral =====
         # - Crear exprección, importar proceso matematico

@@ -97,31 +97,67 @@ def SectionBOX3(exprecion):
         <div class="graph-placeholder">[Gráfico de C(t)] </div>  <!-- BORRAR CUANDO SE implemente el grafico -->
       </section>'''
 
-def SectionBOX4(expresion):
+def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula es la q se analiza
+   import sympy as sp   # se pasa a sympy para analizar la expresion
+   t = sp.symbols('t')
+   expresion_analizable = sp.sympify(formula) # Esta expresión será la derivada
+   constante = expresion_analizable.coeff(t,0)  # Obtener el término constante de la derivada
+   grado = sp.degree(expresion_analizable, gen=t)  # Obtener el grado de la derivada
+   coeficiente_mayor = expresion_analizable.coeff(t, grado)  # Coeficiente del término de mayor grado
+
+   # Ceros de la derivada
+   ceros = sp.solve(expresion_analizable, t)
+   segunda_derivada = sp.diff(expresion_analizable, t)
+   puntos_criticos = []
+   for cero in ceros:
+        if not cero.is_real:
+            continue  # Ignorar ceros complejos, no afectan el análisis real
+
+        if cero > 0:  # Solo considerar ceros positivos
+          valor_segunda = segunda_derivada.subs(t, cero)
+          if valor_segunda > 0:
+              puntos_criticos.append((cero, "mínimo"))
+          elif valor_segunda < 0:
+              puntos_criticos.append((cero, "máximo"))
+          else:
+              puntos_criticos.append((cero, "punto de inflexión"))
+   # Interpretación de puntos críticos
+   interpretacion_puntos = ""
+   if puntos_criticos:
+        interpretacion_puntos += "Los puntos críticos encontrados son: <br>"
+        for punto, tipo in puntos_criticos:
+            interpretacion_puntos += f"t = {punto} es un {tipo}.<br>"
+   else:
+        interpretacion_puntos = "No se encontraron puntos críticos positivos, por lo tanto no hay máximos ni mínimos relevantes en el intervalo considerado."
+
+   if grado == 1:
+       interpretacion = f"La derivada es una función lineal, indicando un {'crecimiento' if coeficiente_mayor > 0 else 'decrecimiento'} constante en la tasa de crecimiento del costo. El término constante {constante} representa el punto inicial en el que luego el costo {"crece" if coeficiente_mayor > 0 else "disminuye"}."
+   elif grado == 0:
+        interpretacion = f"La derivada es una constante ({constante}), indicando que el costo de mantenimiento aumenta a una tasa fija de {constante} cada año."
+   else:
+        interpretacion = f"La derivada es una función polinómica de grado {grado}, indicando que la tasa de crecimiento del costo varía con el tiempo. "
+        if coeficiente_mayor > 0:
+            interpretacion += "El coeficiente positivo del término de mayor grado sugiere que la tasa de aumento del costo se acelera con el tiempo."
+        elif coeficiente_mayor < 0:
+            interpretacion += "El coeficiente negativo del término de mayor grado sugiere que la tasa de aumento del costo se desacelera con el tiempo."
+
    return f'''
       <section class="BOX-4">
         <h2>3. Análisis con Derivadas</h2>
 
-        <p>
-          La derivada de la función indica cómo cambian los costos cada año:
-        </p>
-
-        <div class="formula">{expresion}</div>
-
-        <p>
-          Interpretación:
-          <br />• La tasa de crecimiento del costo aumenta
-          <strong>4 USD/año</strong> cada año. <br />• Permite identificar el
-          año en que el gasto se vuelve insostenible.
-        </p>
-
-        <!-- NUEVA DESCRIPCIÓN -->
         <p>
           En esta sección se aplica la derivada de la función de costo para
           estudiar cómo cambia el gasto con el tiempo. La derivada permite
           analizar tasas de variación, identificar momentos donde los costos
           crecen más rápido y evaluar posibles máximos o mínimos relevantes para
           el comportamiento del sistema.
+        </p>
+
+        <div class="formula">{formulaStr}</div>
+
+        <p>
+          Interpretación:
+          <br />• {interpretacion} <br />• {interpretacion_puntos} <br />
         </p>
 
         <h3>Gráfico de C'(t)</h3>

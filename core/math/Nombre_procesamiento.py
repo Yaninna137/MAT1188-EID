@@ -32,7 +32,7 @@ import numpy as np
 
 class ModeloCosto:
     def __init__(self, funcion_str: str):
-        self.t = sp.Symbol("t", real=True)
+        self.t = sp.Symbol("t")  # Dejar real=True hace que no se calcule bien la derivada
         
         funcion_str = funcion_str.replace("^", "**").strip()
         

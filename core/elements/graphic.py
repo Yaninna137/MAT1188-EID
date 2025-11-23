@@ -18,9 +18,19 @@ def GRAPHIC_A(modelo, T):
     return fig
 
 
-def GRAPHIC_B():
+def GRAPHIC_B(modelo, T):
     # === Gráfico de C()t - Análisi con Derivadas
-    pass
+    t = np.linspace(0, T, 100)
+    y = [modelo.evaluar_Cp(x) for x in t]
+
+    fig, ax = plt.subplots()
+    ax.plot(t, y, color='orange')
+    ax.set_title("Derivada de C(t)")
+    ax.set_xlabel("t (años)")
+    ax.set_ylabel("Tasa de cambio del costo")
+    return fig
+
+    
 def GRAPHIC_C():
     # === Gráfico de la integral acumulada - Costo acumulado
     pass
