@@ -24,3 +24,47 @@ class Elipse:
             raise ValueError("No es posible evaluar porque b es 0")
         if self.a < 0 or self.b < 0:
             raise ValueError("Los valores de 'a' y 'b' deben ser positivos.")
+        
+
+
+import sympy as sp
+import numpy as np
+
+class ModeloCosto:
+    def __init__(self, funcion_str: str):
+        self.t = sp.Symbol("t", real=True)
+        
+        funcion_str = funcion_str.replace("^", "**").strip()
+        
+        try:
+            self.funcion = sp.sympify(funcion_str)
+        except Exception:
+            raise ValueError("La función ingresada no es válida. Usa sintaxis de Python/SymPy, ejemplo: 2*t**2 + 5*t + 10")
+        
+        if not self.funcion.free_symbols:
+            raise ValueError("La función debe depender de t.")
+        
+        self.derivada = sp.diff(self.funcion, self.t)
+        self.integral_indef = sp.integrate(self.funcion, self.t)
+        
+        self.funcion_num = sp.lambdify(self.t, self.funcion, "numpy")
+        self.derivada_num = sp.lambdify(self.t, self.derivada, "numpy")
+
+    def evaluar_C(self, t_val):
+        return float(self.funcion_num(t_val))
+
+    def evaluar_Cp(self, t_val):
+        return float(self.derivada_num(t_val))
+
+    def costo_acumulado(self, T):
+        integral = sp.integrate(self.funcion, (self.t, 0, T))
+        return float(12 * integral)  # convertir a anual como en el informe
+
+    def generar_tabla(self, T):
+        datos = []
+        for i in range(T + 1):
+            C = self.evaluar_C(i)
+            Cp = self.evaluar_Cp(i)
+            S = self.costo_acumulado(i)
+            datos.append([i, C, Cp, S])
+        return datos
