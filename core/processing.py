@@ -6,6 +6,11 @@ El cual mostrara las otras secciones.
 import streamlit as st
 from core.elements.interpretation import Interpretation
 from components.design_textual.information import SectionBOX3,SectionBOX4,SectionBOX5,SectionBOX6,SectionBOX7
+from core.math.Nombre_procesamiento import ModeloCosto
+import sympy as sp
+from core.elements.graphic import GRAPHIC_A
+
+
 def Datos():
     # PESTAÑAS
     tab1, tab2 = st.tabs(["Resultados", "Interpretación Automatica"])
@@ -14,11 +19,25 @@ def Datos():
         st.subheader("Resultados econtrados")
         st.write("Aquí va contenido teórico, gráficos, ejemplos, videos, etc.")
 
-        # ===== SECCION 2.Función Matemática =====
-        # - Crear exprección, importar proceso matematico
-        formula21 = "C(t) = 2t² + 5t + 10"   
-        st.markdown(SectionBOX3(formula21), unsafe_allow_html=True) # Posible enviar datos 
-        # - Implemetar Grafico
+       # Recuperar lo ingresado por usuario
+        func = st.session_state.get("funcion", "2*t**2 + 5*t + 10")
+        T = st.session_state.get("T", 5)
+
+        if func.strip() == "":
+            st.error("❌ Primero debes ingresar una función válida.")
+            return
+        
+        # Crear modelo matemático
+        modelo = ModeloCosto(func)
+
+        # Expresión bonita en LaTeX
+        C_expr = sp.latex(modelo.funcion)
+
+        # Mostrar sección usando tu caja HTML
+        st.markdown(SectionBOX3(f"C(t) = {C_expr}"), unsafe_allow_html=True)
+
+        # Gráfico real
+        st.pyplot(GRAPHIC_A(modelo, T))
 
         # ===== SECCION 3.Derivadas ======
         # - Crear exprección, importar proceso matematico
