@@ -7,7 +7,7 @@ Crear los graficos de cada seccion
 
 def GRAPHIC_A(modelo, T):
     t = np.linspace(0, T, 100)
-    print([modelo.evaluar_C(x) for x in t])
+    # print([modelo.evaluar_C(x) for x in t])
     y = [modelo.evaluar_C(x) for x in t]
 
     fig, ax = plt.subplots()

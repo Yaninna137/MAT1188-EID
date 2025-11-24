@@ -4,6 +4,7 @@ y procesarlo en MATH u ELEMENTS
 El cual mostrara las otras secciones.
 '''
 import streamlit as st
+from core.elements.board import board
 from core.elements.interpretation import Interpretation
 from components.design_textual.information import SectionBOX3,SectionBOX4,SectionBOX5,SectionBOX6,SectionBOX7
 from core.math.Nombre_procesamiento import ModeloCosto
@@ -51,10 +52,17 @@ def Datos():
         formula42 = "S(T) = 8T³ + 30T² + 120T"
         st.markdown(SectionBOX5(formula41,formula42), unsafe_allow_html=True)
 
-        # ===== SEccion 5. Tabla =====
+        # ===== Sección 5. Tabla =====
         st.markdown(SectionBOX6(), unsafe_allow_html=True)
-        # - Crear tabla y mostrar tabla
+        # num_puntos = T + 1 (aseguramos que sea entero positivo)
+        num_puntos = int(T) + 1
+        if num_puntos < 2:
+            num_puntos = 2  # por seguridad, mínimo 2 puntos
 
+        df_tabla = board(modelo, T, num_puntos=num_puntos)
+
+        # Mostrar solo la tabla sin columnas ni gráfico
+        st.dataframe(df_tabla)
 
     with tab2:
         st.subheader("Explicación Desarrollada")
