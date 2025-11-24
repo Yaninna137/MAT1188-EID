@@ -18,12 +18,14 @@ def GRAPHIC_A(modelo, T):
     return fig
 
 
-def GRAPHIC_B(modelo, T):
+def GRAPHIC_B(modelo, T, xy_evaluado=None):
     # === Gráfico de C()t - Análisi con Derivadas
     t = np.linspace(0, T, 100)
     y = [modelo.evaluar_Cp(x) for x in t]
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(4,3))
+    if xy_evaluado:
+        plt.scatter([xy_evaluado[0]], [xy_evaluado[1]], color='red', zorder=5)
     ax.plot(t, y, color='orange')
     ax.set_title("Derivada de C(t)")
     ax.set_xlabel("t (años)")

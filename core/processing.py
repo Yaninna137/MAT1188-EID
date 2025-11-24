@@ -43,10 +43,22 @@ def Datos():
         # - Crear exprección, importar proceso matematico
         derivada = modelo.derivada
         formula31 = f"C'(t) = {sp.latex(derivada)}"
-        st.markdown(SectionBOX4(formula31,derivada), unsafe_allow_html=True)
+        st.markdown(SectionBOX4(formula31,derivada)[0], unsafe_allow_html=True) # Primera parte del html
+        # debajo de la formula, input para evaluar en cierto punto
+        punto_eval = st.number_input("Evaluar C'(t) en t =", min_value=0.0, value=1.0)
+        valor_derivada = modelo.evaluar_Cp(punto_eval)
+        if st.button("Calcular C' en el punto dado"):
+            st.session_state['evaluar_derivada'] = valor_derivada
+        if 'evaluar_derivada' in st.session_state:
+            st.write(f"El valor de C'({punto_eval}) es: {st.session_state['evaluar_derivada']}")
+
+        st.markdown(SectionBOX4(formula31,derivada)[1], unsafe_allow_html=True) # Segunda parte del html
         
         # - Implementar Grafico
-        st.pyplot(GRAPHIC_B(modelo, T))
+        if 'evaluar_derivada' in st.session_state:
+            st.pyplot(GRAPHIC_B(modelo, T, xy_evaluado=(punto_eval, st.session_state['evaluar_derivada'])), use_container_width=False)
+        else:
+            st.pyplot(GRAPHIC_B(modelo, T), use_container_width=False)
 
         # ===== SECCION 4.Integral =====
         # - Crear exprección, importar proceso matematico

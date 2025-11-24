@@ -121,17 +121,18 @@ def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula
               puntos_criticos.append((cero, "máximo"))
           else:
               puntos_criticos.append((cero, "punto de inflexión"))
-   # Interpretación de puntos críticos
+     # Interpretación de puntos críticos
    interpretacion_puntos = ""
    if puntos_criticos:
-        interpretacion_puntos += "Los puntos críticos encontrados son: <br>"
-        for punto, tipo in puntos_criticos:
-            interpretacion_puntos += f"t = {punto} es un {tipo}.<br>"
+       interpretacion_puntos += "Los puntos críticos encontrados son: <br />"
+       for punto, tipo in puntos_criticos:
+        latex_punto = sp.latex(punto)
+        interpretacion_puntos += f"$t = {latex_punto}$ es un {tipo}. <br />"
    else:
-        interpretacion_puntos = "No se encontraron puntos críticos positivos, por lo tanto no hay máximos ni mínimos relevantes en el intervalo considerado."
+       interpretacion_puntos = "No se encontraron puntos críticos para t positivos, por lo tanto no hay máximos ni mínimos relevantes en el intervalo considerado.<br />"
 
    if grado == 1:
-       interpretacion = f"La derivada es una función lineal, indicando un {'crecimiento' if coeficiente_mayor > 0 else 'decrecimiento'} constante en la tasa de crecimiento del costo. El término constante {constante} representa el punto inicial en el que luego el costo {"crece" if coeficiente_mayor > 0 else "disminuye"}."
+       interpretacion = f"La derivada es una función lineal, indicando un {'crecimiento' if coeficiente_mayor > 0 else 'decrecimiento'} constante de {coeficiente_mayor} en la tasa de crecimiento del costo. El término constante {constante} representa el punto inicial en el que luego el costo {"crece" if coeficiente_mayor > 0 else "disminuye"}."
    elif grado == 0:
         interpretacion = f"La derivada es una constante ({constante}), indicando que el costo de mantenimiento aumenta a una tasa fija de {constante} cada año."
    else:
@@ -141,7 +142,7 @@ def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula
         elif coeficiente_mayor < 0:
             interpretacion += "El coeficiente negativo del término de mayor grado sugiere que la tasa de aumento del costo se desacelera con el tiempo."
 
-   return f'''
+   return [f'''
       <section class="BOX-4">
         <h2>3. Análisis con Derivadas</h2>
 
@@ -153,17 +154,25 @@ def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula
           el comportamiento del sistema.
         </p>
 
-        <div class="formula">{formulaStr}</div>
+        $${formulaStr}$$
 
+      </section>
+        ''', f'''
+      <section class="BOX-4">
         <p>
           Interpretación:
-          <br />• {interpretacion} <br />• {interpretacion_puntos} <br />
+          <br />• {interpretacion} <br />
         </p>
 
+
+        {interpretacion_puntos}
+
+        
+        <br />
         <h3>Gráfico de C'(t)</h3>
         <div class="graph-placeholder">[Gráfico de C'(t)]</div> <!-- BORRAR CUANDO SE implemente el grafico -->
       </section>
-'''
+''']
 def SectionBOX5(expresionA,expresionB):
    return f'''
       <section class="BOX-4">
