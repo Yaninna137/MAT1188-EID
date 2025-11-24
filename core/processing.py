@@ -8,7 +8,11 @@ from core.elements.interpretation import Interpretation
 from components.design_textual.information import SectionBOX3,SectionBOX4,SectionBOX5,SectionBOX6,SectionBOX7
 from core.math.Nombre_procesamiento import ModeloCosto
 import sympy as sp
-from core.elements.graphic import GRAPHIC_A
+from core.elements.graphic import (
+    GRAPHIC_A,
+    GRAPHIC_C,   # integral acumulada S(t)
+    GRAPHIC_D    # área bajo la curva C(t)
+)
 
 
 def Datos():
@@ -19,7 +23,6 @@ def Datos():
         st.subheader("Resultados econtrados")
         st.write("Aquí va contenido teórico, gráficos, ejemplos, videos, etc.")
 
-       # Recuperar lo ingresado por usuario
         func = st.session_state.get("funcion", "2*t**2 + 5*t + 10")
         T = st.session_state.get("T", 5)
 
@@ -27,16 +30,12 @@ def Datos():
             st.error("❌ Primero debes ingresar una función válida.")
             return
         
-        # Crear modelo matemático
         modelo = ModeloCosto(func)
 
-        # Expresión bonita en LaTeX
         C_expr = sp.latex(modelo.funcion)
 
-        # Mostrar sección usando tu caja HTML
         st.markdown(SectionBOX3(f"C(t) = {C_expr}"), unsafe_allow_html=True)
 
-        # Gráfico real
         st.pyplot(GRAPHIC_A(modelo, T))
 
         # ===== SECCION 3.Derivadas ======
@@ -45,11 +44,30 @@ def Datos():
         st.markdown(SectionBOX4(formula31), unsafe_allow_html=True)
         # - Implementar Grafico
 
-        # ===== SECCION 4.Integral =====
-        # - Crear exprección, importar proceso matematico
-        formula41 = "S(T) = ∫₀ᵀ 12 C(t) dt"
-        formula42 = "S(T) = 8T³ + 30T² + 120T"
-        st.markdown(SectionBOX5(formula41,formula42), unsafe_allow_html=True)
+        # ===== SECCIÓN 4. Integral =====
+        st.markdown("""
+            <section class='BOX-4'>
+                <h2>4. Integral – Costo Acumulado</h2>
+                <p>Para calcular el costo acumulado durante T años se integra:</p>
+            </section>
+        """, unsafe_allow_html=True)
+
+        st.latex(r"S(T) = 12 \int_{0}^{T} C(t)\, dt")
+
+        S_T = modelo.costo_acumulado(T)
+
+        st.markdown(
+            f"<p><b>Solución numérica:</b> S(T) = {S_T:.2f}</p>",
+            unsafe_allow_html=True
+        )
+
+        # ---------- Grafico de la integral acumulada S(t) ----------
+        st.markdown("<h3>Gráfico de la integral acumulada</h3>", unsafe_allow_html=True)
+        st.pyplot(GRAPHIC_C(modelo, T))
+
+        # ---------- Grafico del area bajo la curva C(t) ----------
+        st.markdown("<h3>Área bajo la curva C(t)</h3>", unsafe_allow_html=True)
+        st.pyplot(GRAPHIC_D(modelo, T))
 
         # ===== SEccion 5. Tabla =====
         st.markdown(SectionBOX6(), unsafe_allow_html=True)

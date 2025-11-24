@@ -6,6 +6,8 @@ Fragmento de otro codigo
 '''
 from dataclasses import dataclass
 from math import cos, sin, pi
+import sympy as sp
+import numpy as np
 
 @dataclass
 class Elipse:
@@ -25,10 +27,6 @@ class Elipse:
         if self.a < 0 or self.b < 0:
             raise ValueError("Los valores de 'a' y 'b' deben ser positivos.")
         
-
-
-import sympy as sp
-import numpy as np
 
 class ModeloCosto:
     def __init__(self, funcion_str: str):
@@ -57,8 +55,12 @@ class ModeloCosto:
         return float(self.derivada_num(t_val))
 
     def costo_acumulado(self, T):
-        integral = sp.integrate(self.funcion, (self.t, 0, T))
-        return float(12 * integral)  # convertir a anual como en el informe
+        t_vals = np.linspace(0, T, 400)
+        y_vals = self.funcion_num(t_vals)
+
+        area = np.trapz(y_vals, t_vals)
+
+        return float(12 * area)
 
     def generar_tabla(self, T):
         datos = []
