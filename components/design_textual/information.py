@@ -120,7 +120,7 @@ def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula
        interpretacion_puntos = "No se encontraron puntos críticos para t positivos, por lo tanto no hay máximos ni mínimos relevantes en el intervalo considerado.<br />"
 
    if grado == 1:
-       interpretacion = f"La derivada es una función lineal, indicando un {'crecimiento' if coeficiente_mayor > 0 else 'decrecimiento'} constante de {coeficiente_mayor} en la tasa de crecimiento del costo. El término constante {constante} representa el punto inicial en el que luego el costo {"crece" if coeficiente_mayor > 0 else "disminuye"}."
+       interpretacion = f"La derivada es una función lineal, indicando un {'crecimiento' if coeficiente_mayor > 0 else 'decrecimiento'} constante de {coeficiente_mayor} en la tasa de crecimiento del costo. El término constante {constante} representa el punto inicial en el que luego el costo {'crece' if coeficiente_mayor > 0 else 'disminuye'}."
    elif grado == 0:
         interpretacion = f"La derivada es una constante ({constante}), indicando que el costo de mantenimiento aumenta a una tasa fija de {constante} cada año."
    else:
