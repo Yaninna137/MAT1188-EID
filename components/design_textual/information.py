@@ -13,27 +13,22 @@ def Header_subheader():
   return Contenido
 
 def SectionBOX1():
-  return'''
-        <!-- 1. Situación problema -->
-        <section class="BOX-1">
-          <h2>1. Situación Problema</h2>
-          <p>
+    return '''
+    <section class="card card-info" id="box1">
+        <h2 class="h2box1">1. Situación Problema</h2>
+        <p>
             En ingeniería informática, los servidores representan un recurso
             crítico. Con el tiempo, su costo de mantención aumenta debido a
             fallas, recalentamiento, desgaste físico y pérdida de eficiencia
             energética. Este comportamiento puede modelarse matemáticamente para
             estimar:
-          </p>
-          <ul>
+        </p>
+        <ul>
             <li>El ritmo al que aumentan los costos de mantención (derivada).</li>
-            <li>
-              El costo acumulado de operar el servidor por varios años (integral).
-            </li>
+            <li>El costo acumulado de operar el servidor por varios años (integral).</li>
             <li>El punto óptimo para reemplazar el hardware.</li>
-          </ul>
-
-          <!-- NUEVA DESCRIPCIÓN -->
-          <p>
+        </ul>
+        <p>
             Esta aplicación parte de un escenario real dentro de la ingeniería
             informática: el aumento progresivo del costo de mantener un servidor a
             lo largo del tiempo. Factores como desgaste del hardware, fallas
@@ -42,36 +37,29 @@ def SectionBOX1():
             modelarse matemáticamente para analizar tasas de variación y
             acumulación, permitiendo tomar decisiones informadas sobre mantención
             o reemplazo.
-          </p>
-        </section>
-  '''
-def SectionBOX2():
-    return '''
-    <section class="BOX-2">
-      <h2>Inputs del Modelo</h2>
-
-      <p>El usuario puede controlar los siguientes parámetros:</p>
-      <div>
-      <ul>
-        <li>
-          <strong>C(t):</strong> Función editable del costo mensual.
-          <br />Ejemplo por defecto:
-          <div class="formula">C(t) = 2t² + 5t + 10</div>
-        </li>
-        <li>
-          <strong>Periodo de amortización T:</strong> (por defecto 5 años)
-        </li>
-        <li>
-          <strong>Opcionales:</strong>
-          <ul>
-            <li>Tasa de descuento r</li>
-            <li>Costo de reemplazo K</li>
-          </ul>
-        </li>
-      </ul>
-      </div>
+        </p>
     </section>
     '''
+
+
+def SectionBOX2():
+    return '''
+    <section class="card card-secondary" id="box2">
+        <h2 class="h2box2">Configuración del Modelo</h2>
+        <p>El usuario puede controlar los siguientes parámetros:</p>
+        <ul>
+            <li><strong>C(t):</strong> Función editable del costo mensual.</li>
+            <li><strong>Periodo de amortización T</strong></li>
+            <li><strong>Opcionales:</strong>
+                <ul>
+                    <li>Tasa de descuento r</li>
+                    <li>Costo de reemplazo K</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    '''
+
 def SectionBOX3(exprecion):
    return f'''
       <section class="BOX-3">
