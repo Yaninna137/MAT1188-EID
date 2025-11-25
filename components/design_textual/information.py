@@ -82,7 +82,6 @@ def SectionBOX3(exprecion):
         </p>
 
         <h3>Gráfico de C(t)</h3>
-        <div class="graph-placeholder">[Gráfico de C(t)] </div>  <!-- BORRAR CUANDO SE implemente el grafico -->
       </section>'''
 
 def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula es la q se analiza
@@ -158,7 +157,6 @@ def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula
         
         <br />
         <h3>Gráfico de C'(t)</h3>
-        <div class="graph-placeholder">[Gráfico de C'(t)]</div> <!-- BORRAR CUANDO SE implemente el grafico -->
       </section>
 ''']
 def SectionBOX5(expresionA,expresionB):
@@ -185,11 +183,9 @@ def SectionBOX5(expresionA,expresionB):
 
         <div class="grid-2">
           <div>
-            <h3>Gráfico de la integral acumulada</h3>    <!-- BORRAR CUANDO SE implemente el grafico -->
             <div class="area-placeholder">[Gráfico S(T)]</div>
           </div>
           <div>
-            <h3>Área bajo la curva C(t)</h3>             <!-- BORRAR CUANDO SE implemente el grafico -->
             <div class="area-placeholder">[Área bajo C(t)]</div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 '''
-En este archivo se deben recir los datos entregados
+En este archivo se deben recibir los datos entregados
 y procesarlo en MATH u ELEMENTS
-El cual mostrara las otras secciones.
+El cual mostrará las otras secciones.
 '''
 import streamlit as st
 from core.elements.board import board
@@ -22,7 +22,7 @@ from core.elements.graphic import (
 
 def Datos():
     # PESTAÑAS
-    tab1, tab2 = st.tabs(["Resultados", "Interpretación Automatica"])
+    tab1, tab2 = st.tabs(["Resultados", "Interpretación Automática"])
 
     # =======================================
     # TAB 1 — RESULTADOS
@@ -51,8 +51,8 @@ def Datos():
         # Mostrar fórmula con Streamlit
         st.latex(rf"C(t) = {C_expr}")
 
-        # Gráfico principal C(t)
-        st.pyplot(GRAPHIC_A(modelo, T))
+        # Gráfico principal C(t) - AHORA CON PLOTLY
+        st.plotly_chart(GRAPHIC_A(modelo, T), use_container_width=True)
 
         # =======================================
         # SECCIÓN 3: DERIVADAS
@@ -74,17 +74,17 @@ def Datos():
 
         st.markdown(SectionBOX4(formula31, derivada)[1], unsafe_allow_html=True)
 
-        # Gráfico derivada
+        # Gráfico derivada - AHORA CON PLOTLY
         if 'evaluar_derivada' in st.session_state:
-            st.pyplot(
+            st.plotly_chart(
                 GRAPHIC_B(
                     modelo, T,
                     xy_evaluado=(punto_eval, st.session_state['evaluar_derivada'])
                 ),
-                use_container_width=False
+                use_container_width=True
             )
         else:
-            st.pyplot(GRAPHIC_B(modelo, T), use_container_width=False)
+            st.plotly_chart(GRAPHIC_B(modelo, T), use_container_width=True)
 
         # =======================================
         # SECCIÓN 4: INTEGRAL (NUEVA DE develop)
@@ -105,12 +105,12 @@ def Datos():
             unsafe_allow_html=True
         )
 
-        # Gráficos nuevos integrales
+        # Gráficos nuevos integrales - AHORA CON PLOTLY
         st.markdown("<h3>Gráfico de la integral acumulada</h3>", unsafe_allow_html=True)
-        st.pyplot(GRAPHIC_C(modelo, T))
+        st.plotly_chart(GRAPHIC_C(modelo, T), use_container_width=True)
 
         st.markdown("<h3>Área bajo la curva C(t)</h3>", unsafe_allow_html=True)
-        st.pyplot(GRAPHIC_D(modelo, T))
+        st.plotly_chart(GRAPHIC_D(modelo, T), use_container_width=True)
 
         # =======================================
         # SECCIÓN 5: TABLA
