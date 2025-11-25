@@ -5,13 +5,17 @@ El cual mostrara las otras secciones.
 '''
 import streamlit as st
 from core.elements.interpretation import Interpretation
-from components.design_textual.information import SectionBOX3,SectionBOX4,SectionBOX5,SectionBOX6,SectionBOX7
+from components.design_textual.information import (
+    SectionBOX3, SectionBOX4, SectionBOX5,
+    SectionBOX6, SectionBOX7
+)
 from core.math.Nombre_procesamiento import ModeloCosto
 import sympy as sp
 from core.elements.graphic import (
     GRAPHIC_A,
-    GRAPHIC_C,   # integral acumulada S(t)
-    GRAPHIC_D    # área bajo la curva C(t)
+    GRAPHIC_B,
+    GRAPHIC_C,
+    GRAPHIC_D
 )
 
 
@@ -19,34 +23,71 @@ def Datos():
     # PESTAÑAS
     tab1, tab2 = st.tabs(["Resultados", "Interpretación Automatica"])
 
+    # =======================================
+    # TAB 1 — RESULTADOS
+    # =======================================
     with tab1:
-        st.subheader("Resultados econtrados")
+        st.subheader("Resultados encontrados")
         st.write("Aquí va contenido teórico, gráficos, ejemplos, videos, etc.")
 
+        # Recuperar datos ingresados por usuario
         func = st.session_state.get("funcion", "2*t**2 + 5*t + 10")
         T = int(st.session_state.get("T", 5) or 5)
 
         if func.strip() == "":
-            st.error("Primero debes ingresar una función válida.")
+            st.error("❌ Primero debes ingresar una función válida.")
             return
         
+        # Crear modelo matemático
         modelo = ModeloCosto(func)
 
+        # Expresión bonita en LaTeX
         C_expr = sp.latex(modelo.funcion)
 
+        # Mostrar sección usando tu caja HTML
         st.markdown(SectionBOX3(f"C(t) = {C_expr}"), unsafe_allow_html=True)
 
+        # Mostrar fórmula con Streamlit
         st.latex(rf"C(t) = {C_expr}")
 
+        # Gráfico principal C(t)
         st.pyplot(GRAPHIC_A(modelo, T))
 
-        # ===== SECCION 3.Derivadas ======
-        # - Crear exprección, importar proceso matematico
-        formula31 = "C'(t) = 4t + 5"
-        st.markdown(SectionBOX4(formula31), unsafe_allow_html=True)
-        # - Implementar Grafico
+        # =======================================
+        # SECCIÓN 3: DERIVADAS
+        # =======================================
+        derivada = modelo.derivada
+        formula31 = f"C'(t) = {sp.latex(derivada)}"
 
-        # ===== SECCIÓN 4. Integral =====
+        st.markdown(SectionBOX4(formula31, derivada)[0], unsafe_allow_html=True)
+
+        # Input para evaluar derivada
+        punto_eval = st.number_input("Evaluar C'(t) en t =", min_value=0.0, value=1.0)
+        valor_derivada = modelo.evaluar_Cp(punto_eval)
+
+        if st.button("Calcular C' en el punto dado"):
+            st.session_state['evaluar_derivada'] = valor_derivada
+
+        if 'evaluar_derivada' in st.session_state:
+            st.write(f"El valor de C'({punto_eval}) es: {st.session_state['evaluar_derivada']}")
+
+        st.markdown(SectionBOX4(formula31, derivada)[1], unsafe_allow_html=True)
+
+        # Gráfico derivada
+        if 'evaluar_derivada' in st.session_state:
+            st.pyplot(
+                GRAPHIC_B(
+                    modelo, T,
+                    xy_evaluado=(punto_eval, st.session_state['evaluar_derivada'])
+                ),
+                use_container_width=False
+            )
+        else:
+            st.pyplot(GRAPHIC_B(modelo, T), use_container_width=False)
+
+        # =======================================
+        # SECCIÓN 4: INTEGRAL (NUEVA DE develop)
+        # =======================================
         st.markdown("""
             <section class='BOX-4'>
                 <h2>4. Integral – Costo Acumulado</h2>
@@ -63,24 +104,26 @@ def Datos():
             unsafe_allow_html=True
         )
 
-        # ---------- Grafico de la integral acumulada S(t) ----------
+        # Gráficos nuevos integrales
         st.markdown("<h3>Gráfico de la integral acumulada</h3>", unsafe_allow_html=True)
         st.pyplot(GRAPHIC_C(modelo, T))
 
-        # ---------- Grafico del area bajo la curva C(t) ----------
         st.markdown("<h3>Área bajo la curva C(t)</h3>", unsafe_allow_html=True)
         st.pyplot(GRAPHIC_D(modelo, T))
 
-        # ===== SEccion 5. Tabla =====
+        # =======================================
+        # SECCIÓN 5: TABLA
+        # =======================================
         st.markdown(SectionBOX6(), unsafe_allow_html=True)
-        # - Crear tabla y mostrar tabla
 
-
+    # =======================================
+    # TAB 2 — INTERPRETACIÓN AUTOMÁTICA
+    # =======================================
     with tab2:
         st.subheader("Explicación Desarrollada")
         st.write("Aquí se encuentra una información extra sobre el desarrollo aplicado.")
 
-        # ===== SECCION 6. INTERPRETACIÓN AUTOMÁTICA =====
+        # Datos para interpretación final
         datos_interpretacion = {
             "C0": modelo.evaluar_C(0),
             "CT": modelo.evaluar_C(T),
@@ -101,7 +144,9 @@ def Datos():
         </section>
         """, unsafe_allow_html=True)
 
-        # ===== DESARROLLO PASO A PASO =====
+        # =======================================
+        # DESARROLLO PASO A PASO
+        # =======================================
         with st.expander("Ver desarrollo paso a paso"):
 
             st.markdown("### Función original")
@@ -124,8 +169,7 @@ def Datos():
                 integral_T_simbolica = sp.integrate(modelo.funcion, (modelo.t, 0, T))
                 st.latex(fr"\int_0^{T} C(t)\, dt = {sp.latex(integral_T_simbolica)}")
             except:
-                st.markdown("No se pudo integrar la función de forma simbólica.")
+                st.warning("No se pudo integrar simbólicamente.")
 
             valor_S = modelo.costo_acumulado(T)
-
             st.latex(fr"S({T}) = {valor_S:.2f}")

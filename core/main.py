@@ -18,7 +18,9 @@ def main():
     inicializar_session_state()
     st.markdown(Desing_CSS(), unsafe_allow_html=True)
     st.markdown(Header_subheader(), unsafe_allow_html=True)
-    Estado = False # Para mostrar las otras paginas
+    # En lugar de solamente true/false, se guarda en la sesión por si otro boton requiere recargar
+    if 'mostrar' not in st.session_state:
+        st.session_state['mostrar'] = False
 
     # ---- Cuerpo Inicial 
     col1, col2 = st.columns([3, 2])
@@ -64,12 +66,14 @@ def main():
                 st.session_state["funcion"] = funcion_limpia
                 st.session_state["T"] = int(T)
 
-                Estado = True
+                # Marcar que ya se ha calculado el modelo para mantener
+                # visibles las secciones de resultados en reruns.
+                st.session_state['mostrar'] = True
 
             except Exception as e:
                 st.error(f"Error inesperado: {e}")
     st.markdown("---")
-    if Estado == True:
+    if st.session_state.get('mostrar', False):
         Datos()
     # ---- Footer ----
     st.markdown(SectionBOX0(), unsafe_allow_html=True)
