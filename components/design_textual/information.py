@@ -285,6 +285,7 @@ def SectionBOX7():
 def SectionBOX0():
    return '''
    <p style='text-align:center; color:gray;'>
-    MAT1188 – Colaboradores
+    MAT1188 – Colaboradores:
+    Nicolas Arriagada, Ignacio Glausser, Yaninna Álvarez, Bayron Flores, Rodrigo Gutiérrez, 
    </p>
   '''
