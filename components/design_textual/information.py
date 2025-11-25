@@ -208,55 +208,7 @@ def SectionBOX6():
           análisis del comportamiento del sistema en distintos momentos del
           tiempo.
         </p>
-        <!-- BORRAR CUANDO SE implemente LA tabla -->
-        <table>
-          <thead>
-            <tr>
-              <th>t (años)</th>
-              <th>C(t)</th>
-              <th>C'(t)</th>
-              <th>Costo acumulado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>0</td>
-              <td>10</td>
-              <td>5</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>17</td>
-              <td>9</td>
-              <td>158</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>28</td>
-              <td>13</td>
-              <td>536</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>43</td>
-              <td>17</td>
-              <td>1218</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>62</td>
-              <td>21</td>
-              <td>2224</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>85</td>
-              <td>25</td>
-              <td>3620</td>
-            </tr>
-          </tbody>
-        </table>
+    
       </section>
 '''
 def SectionBOX7():
