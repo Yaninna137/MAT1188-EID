@@ -24,10 +24,10 @@ def Datos():
         st.write("Aquí va contenido teórico, gráficos, ejemplos, videos, etc.")
 
         func = st.session_state.get("funcion", "2*t**2 + 5*t + 10")
-        T = st.session_state.get("T", 5)
+        T = int(st.session_state.get("T", 5) or 5)
 
         if func.strip() == "":
-            st.error("❌ Primero debes ingresar una función válida.")
+            st.error("Primero debes ingresar una función válida.")
             return
         
         modelo = ModeloCosto(func)
@@ -35,6 +35,8 @@ def Datos():
         C_expr = sp.latex(modelo.funcion)
 
         st.markdown(SectionBOX3(f"C(t) = {C_expr}"), unsafe_allow_html=True)
+
+        st.latex(rf"C(t) = {C_expr}")
 
         st.pyplot(GRAPHIC_A(modelo, T))
 
@@ -77,18 +79,53 @@ def Datos():
     with tab2:
         st.subheader("Explicación Desarrollada")
         st.write("Aquí se encuentra una información extra sobre el desarrollo aplicado.")
-        # ===== SECCION 6.INTERPRETACIÓN
-        st.markdown(SectionBOX7(), unsafe_allow_html=True)
+
+        # ===== SECCION 6. INTERPRETACIÓN AUTOMÁTICA =====
+        datos_interpretacion = {
+            "C0": modelo.evaluar_C(0),
+            "CT": modelo.evaluar_C(T),
+            "Cp0": modelo.evaluar_Cp(0),
+            "CpT": modelo.evaluar_Cp(T),
+            "S_T": modelo.costo_acumulado(T),
+            "T": T,
+            "funcion_latex": sp.latex(modelo.funcion),
+            "derivada_latex": sp.latex(modelo.derivada),
+        }
+
+        interpretacion_texto = Interpretation(datos_interpretacion)
+
+        st.markdown(f"""
+        <section class='BOX-6'>
+            <h2>6. Interpretación Automática</h2>
+            {interpretacion_texto}
+        </section>
+        """, unsafe_allow_html=True)
+
+        # ===== DESARROLLO PASO A PASO =====
         with st.expander("Ver desarrollo paso a paso"):
-            st.write("""
-            Desarrollo Matemático Completo \n
 
-            Derivada:\n
-            d/dt (2t² + 5t + 10) = 4t + 5 \n
+            st.markdown("### Función original")
+            st.latex(fr"C(t) = {sp.latex(modelo.funcion)}")
 
-            Integral:\n
-            ∫ 1/2 (2t² + 5t + 10) dt = 1/2 [ (2/3)t³ + (5/2)t² + 10t ]
-            """)
-        # --- Modificar archivo, para que salga el mensaje corresponiente
-        # --- Posible q se borre SectionBOX07 ya q no es estatito.
-        # --- Y los mensajes deben considir con la interpretación de resultado
+            st.markdown("### Derivada de C(t)")
+            st.latex(fr"C'(t) = {sp.latex(modelo.derivada)}")
+
+            st.markdown("### Integral indefinida de C(t)")
+            st.latex(fr"\int C(t)\, dt = {sp.latex(modelo.integral_indef)} + C")
+
+            st.markdown(f"### Integral definida en [0, {T}]")
+            integral_simbolica = sp.integrate(modelo.funcion, modelo.t)
+            st.latex(fr"\int C(t)\, dt = {sp.latex(integral_simbolica)} + C")
+
+            st.markdown("### Cálculo del costo acumulado final")
+            st.latex(r"S(T) = 12 \cdot \int_0^T C(t)\, dt")
+
+            try:
+                integral_T_simbolica = sp.integrate(modelo.funcion, (modelo.t, 0, T))
+                st.latex(fr"\int_0^{T} C(t)\, dt = {sp.latex(integral_T_simbolica)}")
+            except:
+                st.markdown("No se pudo integrar la función de forma simbólica.")
+
+            valor_S = modelo.costo_acumulado(T)
+
+            st.latex(fr"S({T}) = {valor_S:.2f}")
