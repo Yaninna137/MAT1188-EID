@@ -114,7 +114,7 @@ def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula
        interpretacion_puntos += "Los puntos críticos encontrados son: <br />"
        for punto, tipo in puntos_criticos:
         latex_punto = sp.latex(punto)
-        interpretacion_puntos += f"$t = {latex_punto}$ es un {tipo}. <br />"
+        interpretacion_puntos += f"$t = {latex_punto}$ es un {tipo}, {"en este punto el costo de mantención del servidor alcanza un nivel bajo, pero comienza a aumentar." if tipo == "mínimo" else "el costo de mantención alcanza un nivel alto, pero luego comienza a disminuir, se recomienda analizar cuidadosamente las estrategias de mantenimiento."} <br />"
    else:
        interpretacion_puntos = "No se encontraron puntos críticos para t positivos, por lo tanto no hay máximos ni mínimos relevantes en el intervalo considerado.<br />"
 
