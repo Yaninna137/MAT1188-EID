@@ -13,18 +13,24 @@ def board(modelo, T, num_puntos):
 
     data = {
         "Tiempo": tiempos,
-        "Valor función C(t)": valores_funcion,
+        "costo mantencion C(t) (USD)": valores_funcion,
     }
 
     # Si el modelo tiene derivada, la usamos
-    if hasattr(modelo, "evaluar_Cp"):  # ← Cambio aquí
-        derivada_funcion = [modelo.evaluar_Cp(t) for t in tiempos]  # ← Cambio aquí
-        data["Derivada C'(t)"] = derivada_funcion
+    if hasattr(modelo, "evaluar_Cp"):
+        derivada_funcion = [modelo.evaluar_Cp(t) for t in tiempos]
+        data["tasa de crecimiento C'(t) (USD/año)"] = derivada_funcion
 
     # Si el modelo tiene método de costo acumulado, lo usamos
     if hasattr(modelo, "costo_acumulado"):
         costo_acumulado = [round(modelo.costo_acumulado(t), 2) for t in tiempos]
-        data["Costo acumulado S(t)"] = costo_acumulado
+        data["Costo acumulado S(t) (USD)"] = costo_acumulado
 
     df = pd.DataFrame(data)
+    
+    # Formatear columnas monetarias con símbolo de dólar
+    for col in df.columns:
+        if "USD" in col and col != "Tiempo":
+            df[col] = df[col].apply(lambda x: f"${x:,.2f}")
+    
     return df
