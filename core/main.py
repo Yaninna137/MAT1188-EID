@@ -26,8 +26,13 @@ def main():
     col1, col2 = st.columns([3, 2])
     with col1:
         st.markdown(SectionBOX1(), unsafe_allow_html=True)
-    with col2:
         st.markdown(SectionBOX2(), unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+        <div class="input-card">
+            <h4> Parámetros de ingresa valores</h4>
+        </div>    
+        """, unsafe_allow_html=True)
         # ---- Posible campos de ediccion, para enviar los datos ---- Mejorar
         func = st.text_input(
             "Ingrese la función C(t):",
@@ -35,7 +40,6 @@ def main():
             placeholder="Ejemplo: 2*t**2 + 5*t + 10",
             help="Debe usar sintaxis Python/SymPy: ** para potencias, * para multiplicar, t como variable."
         )
-
         T = st.number_input("Periodo de amortización (años)", min_value=1, value=5)
         r = st.number_input("Tasa de descuento r (opcional)", min_value=0.0, value=0.0)
         K = st.number_input("Costo de reemplazo K (opcional)", min_value=0.0, value=0.0)

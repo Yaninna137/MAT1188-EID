@@ -13,27 +13,22 @@ def Header_subheader():
   return Contenido
 
 def SectionBOX1():
-  return'''
-        <!-- 1. Situación problema -->
-        <section class="BOX-1">
-          <h2>1. Situación Problema</h2>
-          <p>
+    return '''
+    <section class="card card-info" id="box1">
+        <h2 class="h2box1">1. Situación Problema</h2>
+        <p>
             En ingeniería informática, los servidores representan un recurso
             crítico. Con el tiempo, su costo de mantención aumenta debido a
             fallas, recalentamiento, desgaste físico y pérdida de eficiencia
             energética. Este comportamiento puede modelarse matemáticamente para
             estimar:
-          </p>
-          <ul>
+        </p>
+        <ul>
             <li>El ritmo al que aumentan los costos de mantención (derivada).</li>
-            <li>
-              El costo acumulado de operar el servidor por varios años (integral).
-            </li>
+            <li>El costo acumulado de operar el servidor por varios años (integral).</li>
             <li>El punto óptimo para reemplazar el hardware.</li>
-          </ul>
-
-          <!-- NUEVA DESCRIPCIÓN -->
-          <p>
+        </ul>
+        <p>
             Esta aplicación parte de un escenario real dentro de la ingeniería
             informática: el aumento progresivo del costo de mantener un servidor a
             lo largo del tiempo. Factores como desgaste del hardware, fallas
@@ -42,36 +37,29 @@ def SectionBOX1():
             modelarse matemáticamente para analizar tasas de variación y
             acumulación, permitiendo tomar decisiones informadas sobre mantención
             o reemplazo.
-          </p>
-        </section>
-  '''
-def SectionBOX2():
-    return '''
-    <section class="BOX-2">
-      <h2>Inputs del Modelo</h2>
-
-      <p>El usuario puede controlar los siguientes parámetros:</p>
-      <div>
-      <ul>
-        <li>
-          <strong>C(t):</strong> Función editable del costo mensual.
-          <br />Ejemplo por defecto:
-          <div class="formula">C(t) = 2t² + 5t + 10</div>
-        </li>
-        <li>
-          <strong>Periodo de amortización T:</strong> (por defecto 5 años)
-        </li>
-        <li>
-          <strong>Opcionales:</strong>
-          <ul>
-            <li>Tasa de descuento r</li>
-            <li>Costo de reemplazo K</li>
-          </ul>
-        </li>
-      </ul>
-      </div>
+        </p>
     </section>
     '''
+
+
+def SectionBOX2():
+    return '''
+    <section class="card card-secondary" id="box2">
+        <h2 class="h2box2">Configuración del Modelo</h2>
+        <p>El usuario puede controlar los siguientes parámetros:</p>
+        <ul>
+            <li><strong>C(t):</strong> Función editable del costo mensual.</li>
+            <li><strong>Periodo de amortización T</strong></li>
+            <li><strong>Opcionales:</strong>
+                <ul>
+                    <li>Tasa de descuento r</li>
+                    <li>Costo de reemplazo K</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    '''
+
 def SectionBOX3(exprecion):
    return f'''
       <section class="BOX-3">
@@ -94,7 +82,6 @@ def SectionBOX3(exprecion):
         </p>
 
         <h3>Gráfico de C(t)</h3>
-        <div class="graph-placeholder">[Gráfico de C(t)] </div>  <!-- BORRAR CUANDO SE implemente el grafico -->
       </section>'''
 
 def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula es la q se analiza
@@ -132,7 +119,7 @@ def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula
        interpretacion_puntos = "No se encontraron puntos críticos para t positivos, por lo tanto no hay máximos ni mínimos relevantes en el intervalo considerado.<br />"
 
    if grado == 1:
-       interpretacion = f"La derivada es una función lineal, indicando un {'crecimiento' if coeficiente_mayor > 0 else 'decrecimiento'} constante de {coeficiente_mayor} en la tasa de crecimiento del costo. El término constante {constante} representa el punto inicial en el que luego el costo {"crece" if coeficiente_mayor > 0 else "disminuye"}."
+       interpretacion = f"La derivada es una función lineal, indicando un {'crecimiento' if coeficiente_mayor > 0 else 'decrecimiento'} constante de {coeficiente_mayor} en la tasa de crecimiento del costo. El término constante {constante} representa el punto inicial en el que luego el costo {'crece' if coeficiente_mayor > 0 else 'disminuye'}."
    elif grado == 0:
         interpretacion = f"La derivada es una constante ({constante}), indicando que el costo de mantenimiento aumenta a una tasa fija de {constante} cada año."
    else:
@@ -170,7 +157,6 @@ def SectionBOX4(formulaStr, formula): # formulaStr es la que se muestra, formula
         
         <br />
         <h3>Gráfico de C'(t)</h3>
-        <div class="graph-placeholder">[Gráfico de C'(t)]</div> <!-- BORRAR CUANDO SE implemente el grafico -->
       </section>
 ''']
 def SectionBOX5(expresionA,expresionB):
@@ -197,11 +183,9 @@ def SectionBOX5(expresionA,expresionB):
 
         <div class="grid-2">
           <div>
-            <h3>Gráfico de la integral acumulada</h3>    <!-- BORRAR CUANDO SE implemente el grafico -->
             <div class="area-placeholder">[Gráfico S(T)]</div>
           </div>
           <div>
-            <h3>Área bajo la curva C(t)</h3>             <!-- BORRAR CUANDO SE implemente el grafico -->
             <div class="area-placeholder">[Área bajo C(t)]</div>
           </div>
         </div>
@@ -220,55 +204,7 @@ def SectionBOX6():
           análisis del comportamiento del sistema en distintos momentos del
           tiempo.
         </p>
-        <!-- BORRAR CUANDO SE implemente LA tabla -->
-        <table>
-          <thead>
-            <tr>
-              <th>t (años)</th>
-              <th>C(t)</th>
-              <th>C'(t)</th>
-              <th>Costo acumulado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>0</td>
-              <td>10</td>
-              <td>5</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>17</td>
-              <td>9</td>
-              <td>158</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>28</td>
-              <td>13</td>
-              <td>536</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>43</td>
-              <td>17</td>
-              <td>1218</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>62</td>
-              <td>21</td>
-              <td>2224</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>85</td>
-              <td>25</td>
-              <td>3620</td>
-            </tr>
-          </tbody>
-        </table>
+    
       </section>
 '''
 def SectionBOX7():
@@ -297,6 +233,7 @@ def SectionBOX7():
 def SectionBOX0():
    return '''
    <p style='text-align:center; color:gray;'>
-    MAT1188 – Colaboradores
+    MAT1188 – Colaboradores:
+    Nicolas Arriagada, Ignacio Glausser, Yaninna Álvarez, Bayron Flores, Rodrigo Gutiérrez, 
    </p>
   '''
